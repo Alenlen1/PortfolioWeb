@@ -1,0 +1,58 @@
+/* A shared rhythm for the portfolio's content sections. */
+.about { padding-top: 72px; }
+.about-layout { margin-bottom: 24px; }
+.about-foot { max-width: 1100px; margin: 0 auto; padding-bottom: 8px; }
+.tech-stack-section { padding-top: 48px; padding-bottom: 56px; }
+.projects-section { padding-top: 88px; padding-bottom: 72px; }
+.skyline-section { padding-top: 16px; padding-bottom: 80px; }
+
+:is(.tech-stack-section, .projects-section, .skyline-section) > .section-heading {
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 36px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+:is(.tech-stack-section, .projects-section, .skyline-section) .section-heading h2 {
+  margin-top: 14px;
+  font-size: clamp(28px, 2.5vw, 38px);
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -.04em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+:is(.tech-stack-section, .projects-section, .skyline-section) .section-heading .eyebrow {
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.6;
+  letter-spacing: .2em;
+}
+:is(.tech-stack-section, .projects-section) .section-watermark {
+  top: 12px;
+  font-size: clamp(70px, 13vw, 200px);
+}
+.section-heading > .text-link { flex-shrink: 0; }
+
+@media (max-width: 760px) {
+  .about { padding-top: 48px; }
+  .about-layout { margin-bottom: 20px; }
+  .about-foot { align-items: flex-start; padding-bottom: 4px; }
+  .tech-stack-section { padding-top: 36px; padding-bottom: 40px; }
+  .projects-section { padding-top: 60px; padding-bottom: 48px; }
+  .skyline-section { padding-top: 12px; padding-bottom: 56px; }
+  :is(.tech-stack-section, .projects-section, .skyline-section) > .section-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+  }
+  :is(.tech-stack-section, .projects-section, .skyline-section) .section-heading h2 {
+    margin-top: 10px;
+    font-size: clamp(25px, 6vw, 30px);
+  }
+  :is(.tech-stack-section, .projects-section, .skyline-section) .section-heading .eyebrow {
+    font-size: 8px;
+  }
+}
