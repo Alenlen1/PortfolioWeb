@@ -1,60 +1,130 @@
 /* Portrait framing and small details shared by both theme variants. */
 .portrait-card {
+  border-radius: 28px;
   background:
-    radial-gradient(ellipse at 30% 12%, #f4f7ee, transparent 62%),
-    linear-gradient(150deg, #dce4d4, #b8c9ac 65%, #9db08f);
-  border-color: #53694b35;
+    radial-gradient(ellipse at 10% 5%, #fffef7, transparent 58%),
+    linear-gradient(135deg, #e7ecdf, #c1ccb5 58%, #95a987);
+  border-color: #53694b40;
   box-shadow:
-    0 18px 50px #35462c24,
+    0 6px 16px #35462c0d,
+    0 28px 64px -12px #35462c30,
     inset 0 1px 0 #ffffffb3;
 }
 .portrait-card:hover {
-  box-shadow: 0 24px 60px #35462c30;
+  box-shadow:
+    0 8px 20px #35462c12,
+    0 30px 70px #35462c29;
 }
 [data-theme="dark"] .portrait-card {
   border-color: #bfd1ae30;
   box-shadow:
-    0 20px 55px #00000045,
+    0 8px 20px #00000024,
+    0 28px 65px #00000050,
     inset 0 1px 0 #d9e9cc12;
 }
 [data-theme="dark"] .portrait-card:hover {
-  box-shadow: 0 26px 65px #00000055;
+  box-shadow:
+    0 10px 24px #00000030,
+    0 32px 70px #00000060,
+    inset 0 1px 0 #d9e9cc18;
 }
 .portrait-card::after {
   background:
-    radial-gradient(ellipse at 35% 15%, #79956818, transparent 60%),
-    linear-gradient(155deg, #29352b, #141d17 60%, #0b110d);
+    radial-gradient(ellipse at 18% 0%, #93ae6e28, transparent 62%),
+    linear-gradient(135deg, #303e30, #172019 58%, #0a100c);
+}
+.portrait-card::before {
+  background: linear-gradient(180deg, transparent 65%, #36452b24);
+}
+[data-theme="dark"] .portrait-card::before {
+  background: linear-gradient(180deg, transparent 55%, #050b086b);
 }
 .profile-portraits {
-  inset: 112px 0 0;
+  inset: 104px 0 0;
+}
+.portrait-frame {
+  position: absolute;
+  inset: 7px;
+  z-index: 4;
+  border: 1px solid #f8fff038;
+  border-radius: 21px;
+  pointer-events: none;
+  mask-image: linear-gradient(#000, #0009 45%, transparent 85%);
+}
+[data-theme="dark"] .portrait-frame {
+  border-color: #d9e9cc12;
 }
 .portrait-top {
-  top: 26px;
+  top: 24px;
   left: 26px;
   right: 26px;
-  padding-bottom: 16px;
+  padding-bottom: 18px;
   align-items: center;
   gap: 16px;
   border-color: #3d523c26;
+  border-image: linear-gradient(90deg, #526c465c, #526c4610) 1;
+}
+[data-theme="dark"] .portrait-top {
+  border-image: linear-gradient(90deg, #bbd19b55, #bbd19b0a) 1;
 }
 .portrait-top .portrait-roles {
   display: grid;
-  gap: 4px;
+  justify-items: start;
+  gap: 7px;
   font-size: 10px;
   letter-spacing: 0.11em;
   line-height: 1.5;
+  padding-left: 12px;
+  border-left: 2px solid #61774d;
 }
-.portrait-roles > span:first-child {
+[data-theme="dark"] .portrait-top .portrait-roles {
+  border-left-color: #bad197;
+}
+.portrait-top .portrait-roles > span:first-child {
+  font-family: var(--sans);
+  font-size: 13px;
   font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
 }
-.portrait-roles > span:last-child {
+.portrait-top .portrait-roles > span:last-child {
+  padding: 3px 7px;
+  border: 1px solid #3d523c26;
+  border-radius: 5px;
+  background: #f8fff040;
   font-size: 9px;
-  letter-spacing: 0.09em;
-  opacity: 0.75;
+  letter-spacing: 0.07em;
+  line-height: 1.4;
+  transition:
+    background-color 0.55s ease,
+    border-color 0.55s ease;
+}
+[data-theme="dark"] .portrait-top .portrait-roles > span:last-child {
+  border-color: #d9e9cc26;
+  background: #d9e9cc0a;
+}
+.profile-photo {
+  filter: drop-shadow(-8px 12px 16px #24341d18);
 }
 .portrait-top .portrait-star {
-  font-size: 24px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #3d523c26;
+  border-radius: 50%;
+  background: #f8fff026;
+  font-size: 20px;
   flex-shrink: 0;
+}
+[data-theme="dark"] .portrait-top .portrait-star {
+  border-color: #d9e9cc26;
+  background: #d9e9cc08;
+}
+@media (prefers-reduced-motion: reduce) {
+  .portrait-top .portrait-roles > span:last-child {
+    transition: none;
+  }
 }
 @media screen and (max-width: 760px) {
   .portrait-top {
@@ -66,10 +136,13 @@
     font-size: 9px;
     letter-spacing: 0.07em;
   }
-  .portrait-roles > span:last-child {
+  .portrait-top .portrait-roles > span:last-child {
     font-size: 8px;
   }
+  .portrait-top .portrait-roles > span:first-child {
+    font-size: 11px;
+  }
   .profile-portraits {
-    inset: 100px 0 0;
+    inset: 96px 0 0;
   }
 }

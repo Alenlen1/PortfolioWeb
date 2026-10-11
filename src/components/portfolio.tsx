@@ -368,6 +368,7 @@ export function Hero() {
           <span>&#125;;</span>
         </div>
         <ProfilePortrait />
+        <div className="portrait-frame" aria-hidden="true" />
         <div className="portrait-top">
           <span className="portrait-roles eyebrow">
             <span>Full Stack Web Developer</span>
