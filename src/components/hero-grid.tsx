@@ -6,11 +6,13 @@ type Point = { x: number; y: number };
 type Ripple = Point & { born: number };
 
 // Adapted from the supplied KineticGrid: cursor warping, pinned edges, and ripples.
-export function HeroGrid() {
+export function HeroGrid({ intro = false }: { intro?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = canvasRef.current;
-    const hero = canvas?.closest<HTMLElement>(".hero");
+    const hero = canvas?.closest<HTMLElement>(
+      intro ? ".portfolio-intro" : ".hero",
+    );
     const context = canvas?.getContext("2d");
     if (!canvas || !hero || !context) return;
 
@@ -19,6 +21,7 @@ export function HeroGrid() {
       height = 0,
       frame = 0,
       visible = true;
+    let entranceStarted = false;
     let mouse: Point | null = null,
       target: Point | null = null;
     let ripples: Ripple[] = [];
@@ -143,6 +146,15 @@ export function HeroGrid() {
       canvas.width = Math.round(width * ratio);
       canvas.height = Math.round(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      if (intro && !entranceStarted && width > 0 && height > 0) {
+        entranceStarted = true;
+        if (!motion.matches)
+          ripples.push({
+            x: width / 2,
+            y: height / 2,
+            born: performance.now(),
+          });
+      }
       schedule();
     };
     const position = (event: PointerEvent) => {
@@ -189,9 +201,11 @@ export function HeroGrid() {
       }
     });
     intersection.observe(hero);
-    hero.addEventListener("pointermove", move);
-    hero.addEventListener("pointerleave", leave);
-    hero.addEventListener("pointerdown", click);
+    if (!intro) {
+      hero.addEventListener("pointermove", move);
+      hero.addEventListener("pointerleave", leave);
+      hero.addEventListener("pointerdown", click);
+    }
     motion.addEventListener("change", preference);
     document.addEventListener("visibilitychange", schedule);
     resize();
@@ -206,7 +220,7 @@ export function HeroGrid() {
       motion.removeEventListener("change", preference);
       document.removeEventListener("visibilitychange", schedule);
     };
-  }, []);
+  }, [intro]);
   return (
     <div className="hero-grid" aria-hidden="true">
       <canvas ref={canvasRef} />
