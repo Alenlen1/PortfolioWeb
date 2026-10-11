@@ -74,7 +74,13 @@ export default async function ProjectPage({
           </div>
           <div>
             <span className="eyebrow">Technology</span>
-            <ProjectStack items={[project.stack[0]]} />
+            <ProjectStack
+              items={[
+                project.stack.find((tech) => tech === "Next.js") ??
+                  project.stack.find((tech) => tech === "React") ??
+                  project.stack[0],
+              ]}
+            />
           </div>
         </div>
         <ProjectGallery project={project} index={index} />
