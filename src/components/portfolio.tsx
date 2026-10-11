@@ -53,25 +53,8 @@ export function SocialLinks({ icons = false }: { icons?: boolean }) {
   </div>;
 }
 
-function TypedRole() {
-  const [text, setText] = useState(profile.roles[0]);
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let role = 0, position = profile.roles[0].length, deleting = true;
-    let timer: ReturnType<typeof setTimeout>;
-    const tick = () => {
-      const value = profile.roles[role];
-      position += deleting ? -1 : 1;
-      setText(value.slice(0, position));
-      let delay = deleting ? 35 : 70;
-      if (position === 0) { deleting = false; role = (role + 1) % profile.roles.length; delay = 350; }
-      if (!deleting && position === profile.roles[role].length) { deleting = true; delay = 3000; }
-      timer = setTimeout(tick, delay);
-    };
-    timer = setTimeout(tick, 3500);
-    return () => clearTimeout(timer);
-  }, []);
-  return <p className="typed-role" aria-label={profile.roles[0]}><span aria-hidden="true">{text}<span className="type-cursor" /></span></p>;
+function TypedRole({ text, label }: { text: string; label: string }) {
+  return <p className="typed-role" aria-label={label}><span aria-hidden="true">{text}<span className="type-cursor" /></span></p>;
 }
 
 const greetings = [
@@ -87,27 +70,44 @@ const greetings = [
   { text: "Kumusta", lang: "fil" },
 ];
 
-function RotatingGreeting() {
-  const [greeting, setGreeting] = useState({ index: 0, text: greetings[0].text });
+function useHeroTextCycle() {
+  const [cycle, setCycle] = useState({ index: 0, progress: 1 });
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let index = 0, position = Array.from(greetings[0].text).length, deleting = true;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let index = 0, progress = 1, deleting = true;
     let timer: ReturnType<typeof setTimeout>;
     const tick = () => {
-      position += deleting ? -1 : 1;
-      setGreeting({ index, text: Array.from(greetings[index].text).slice(0, position).join("") });
-      let delay = deleting ? 90 : 150;
-      if (position === 0) { deleting = false; index = (index + 1) % greetings.length; delay = 650; }
-      if (!deleting && position === Array.from(greetings[index].text).length) { deleting = true; delay = 5000; }
+      const steps = Math.max(Array.from(greetings[index % greetings.length].text).length, profile.roles[index % profile.roles.length].length);
+      progress = Math.max(0, Math.min(1, progress + (deleting ? -1 : 1) / steps));
+      // Snap near the endpoints to avoid an extra frame from rounding errors.
+      if (progress < .0001) progress = 0;
+      if (progress > .9999) progress = 1;
+      setCycle({ index, progress });
+      let delay = deleting ? 65 : 110;
+      if (progress === 0) { deleting = false; index++; delay = 650; }
+      if (!deleting && progress === 1) { deleting = true; delay = 5000; }
       timer = setTimeout(tick, delay);
     };
-    timer = setTimeout(tick, 5000);
-    return () => clearTimeout(timer);
+    const updateMotion = () => {
+      clearTimeout(timer);
+      progress = 1; deleting = true;
+      setCycle({ index, progress });
+      if (!motion.matches) timer = setTimeout(tick, 5000);
+    };
+    updateMotion();
+    motion.addEventListener("change", updateMotion);
+    return () => { clearTimeout(timer); motion.removeEventListener("change", updateMotion); };
   }, []);
-  return <span className="hero-greeting" aria-hidden="true" lang={greetings[greeting.index].lang}>{greeting.text}</span>;
+  const greeting = greetings[cycle.index % greetings.length];
+  const role = profile.roles[cycle.index % profile.roles.length];
+  const portion = (value: string) => {
+    const characters = Array.from(value);
+    return characters.slice(0, Math.round(characters.length * cycle.progress)).join("");
+  };
+  return { greeting: portion(greeting.text), language: greeting.lang, title: portion(role), role };
 }
 
-function AnimatedHeroHeading() {
+function AnimatedHeroHeading({ greeting, language }: { greeting: string; language: string }) {
   const container = useRef<HTMLDivElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const name = useRef<HTMLSpanElement>(null);
@@ -140,10 +140,11 @@ function AnimatedHeroHeading() {
     size.observe(title);
     return () => { changes.disconnect(); size.disconnect(); animation?.cancel(); };
   }, []);
-  return <div className="hero-heading" ref={container}><h1 ref={heading} aria-label={`Hi, I am ${profile.name}.`}><RotatingGreeting /><span ref={name} className="hero-name-line" aria-hidden="true">, I’m <em>{profile.name}.</em></span></h1></div>;
+  return <div className="hero-heading" ref={container}><h1 ref={heading} aria-label={`Hi, I am ${profile.name}.`}><span className="hero-greeting" aria-hidden="true" lang={language}>{greeting}</span><span ref={name} className="hero-name-line" aria-hidden="true">, I’m <em>{profile.name}.</em></span></h1></div>;
 }
 
 export function Hero() {
+  const text = useHeroTextCycle();
   const portrait = useRef<HTMLDivElement>(null);
   const tilt = (event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType !== "mouse" || !window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches) return;
@@ -158,7 +159,7 @@ export function Hero() {
   const reset = () => { portrait.current?.style.setProperty("--tilt-x", "0deg"); portrait.current?.style.setProperty("--tilt-y", "0deg"); };
   return <section id="home" className="hero">
     <HeroGrid />
-    <div className="hero-intro"><div className="availability"><span className="status-dot"/> Open to new opportunities</div><SocialLinks icons /><p className="location">{profile.location}</p><AnimatedHeroHeading /><TypedRole /><p className="hero-description"><strong>Building smarter. Designing better.</strong><br/>Digital experiences powered by AI, built for performance.</p><div className="hero-actions"><a href="#projects" className="pill-button">Explore my work <ArrowDown size={14}/></a><Link href="/resume" className="hero-resume-link">Resume <ArrowUpRight size={14} /></Link></div><div className="hero-note"><span>01 — An introduction</span><span>Crafted with intention <span aria-hidden="true">✦</span></span></div></div>
+    <div className="hero-intro"><div className="availability"><span className="status-dot"/> Open to new opportunities</div><SocialLinks icons /><p className="location">{profile.location}</p><AnimatedHeroHeading greeting={text.greeting} language={text.language} /><TypedRole text={text.title} label={text.role} /><p className="hero-description"><strong>Building smarter. Designing better.</strong><br/>Digital experiences powered by AI, built for performance.</p><div className="hero-actions"><a href="#projects" className="pill-button">Explore my work <ArrowDown size={14}/></a><Link href="/resume" className="hero-resume-link">Resume <ArrowUpRight size={14} /></Link></div><div className="hero-note"><span>01 — An introduction</span><span>Crafted with intention <span aria-hidden="true">✦</span></span></div></div>
     <div ref={portrait} className="portrait-card" onPointerMove={tilt} onPointerLeave={reset}>
       <div className="portrait-code-label" aria-hidden="true"><span>const developer = &#123;</span><span>&nbsp; curiosity: <b>∞</b>,</span><span>&nbsp; always: <b className="portrait-mood-light">"yearning"</b><b className="portrait-mood-dark">"begging"</b></span><span>&#125;;</span></div>
       <ProfilePortrait/>
