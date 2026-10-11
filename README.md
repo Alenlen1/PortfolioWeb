@@ -1,40 +1,45 @@
-# Alen's portfolio
+﻿# Alen's Portfolio
 
-A React + Next.js App Router + TypeScript portfolio inspired by https://iqmal.dev/. The homepage focuses on About, Tech Stack, and Projects, with an animated introduction, accessible navigation, project galleries and case studies, and a contact footer.
+Personal portfolio of **Alen Amarante**, a Full Stack Web Developer and AI Web Developer. Built with Next.js, React, and TypeScript.
 
-## Run
+## Features
+
+- Responsive design with light and dark themes.
+- Animated intro with a connected navbar logo.
+- Multilingual greetings and synchronized developer titles.
+- Project previews, case studies, and a printable resume.
+- GitHub activity with 2D and 3D views.
+- Contact links and reduced-motion support.
+
+## Getting started
+
+Requires Node.js 20.9 or later.
 
 ```sh
 npm install
 npm run dev
 ```
 
-Open http://127.0.0.1:3000.
+Open [localhost:3000](http://127.0.0.1:3000).
+
+## Commands
 
 ```sh
-npm run typecheck
-npm run build
-npm start
+npm run typecheck   # Check TypeScript
+npm run build       # Build for production
+npm start           # Run the production build
 ```
 
-## Make it yours
+## Customize
 
-- Edit `src/data/portfolio.ts` for your name, email, location, social URLs, experience, skills, and project descriptions. Social URLs currently point to the platform homepages.
-- Update the title and description in `src/app/layout.tsx`.
-- Replace the illustrated placeholder in `Hero` in `src/components/portfolio.tsx` with your own photo.
-- Projects are ordered EvacuRosa, SkillBridge, then Cashout Tracker (a personal project), with live URLs in `src/data/portfolio.ts`. Each also has a detail page at `/projects/[slug]`.
-- Project images are real screenshots captured from the supplied URLs, stored in `public/projects/`. Replace those PNG files to update the previews. `src/components/project-screenshot.tsx` imports and bundles each screenshot directly and renders it with a native image element.
-- `/resume` uses the same sample data. Its Save as PDF button opens the browser print dialog.
-- Adjust base colors and layouts in `src/app/globals.css`, and the enhanced art direction in `src/app/enhancements.css`.
-- Edit `toolkitGroups` in `src/data/portfolio.ts` for technologies, coding tools, workspace tools, and hosting. The section is rendered by `src/components/enhancements.tsx`, with icons from `src/components/toolkit-icon.tsx`.
+Edit `src/data/portfolio.ts` for profile details, projects, and technologies. Images and videos are stored in `public/`.
 
-## Interactions
+GitHub data can refresh on requests after the one-hour cache expires. A saved snapshot is used if GitHub is unavailable.
 
-- Fixed navigation highlights the current section; the top bar indicates reading progress.
-- The portrait card responds to mouse movement; motion respects the device's reduced-motion setting.
-- Project screenshots open in an expanded dialog with Escape support, with live site links beside each preview.
-- Filter the project archive by discipline.
-- Project detail pages include an overview, highlights, and a live site link.
-- The contribution skyline uses Alenlen1's public GitHub calendar, refreshes hourly, and supports 2D/3D views. `src/lib/github-contributions.ts` loads the daily counts; `src/data/github-contributions.json` preserves a real snapshot for temporary network failures.
+## Deploy
 
-Profile, resume, and contact details remain placeholders. Project descriptions reflect their public sites. No personal content or photos from the design reference are used.
+Import the repository into Vercel using the Next.js preset.
+
+## Inspiration
+
+Design inspired by [iqmal.dev](https://iqmal.dev/), customized with my own content, projects, and animations.

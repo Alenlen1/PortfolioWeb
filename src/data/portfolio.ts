@@ -55,6 +55,7 @@ export const toolkitGroups = [
     category: "Tools",
     description: "A little help turning ideas into code.",
     items: [
+      { name: "21st.dev", icon: "21stdev", detail: "UI components" },
       { name: "Antigravity", icon: "antigravity", detail: "Development tool" },
       { name: "Claude Code", icon: "claude", detail: "Coding assistant" },
       { name: "Codex", icon: "codex", detail: "Coding agent" },

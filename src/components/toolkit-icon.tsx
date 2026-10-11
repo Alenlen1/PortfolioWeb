@@ -1,4 +1,4 @@
-import { CodeXml, Orbit, SquareTerminal } from "lucide-react";
+import { Blocks, CodeXml, Orbit, SquareTerminal } from "lucide-react";
 import {
   siClaude,
   siCss,
@@ -64,6 +64,12 @@ export function ToolkitIcon({ name }: { name: string }) {
       </svg>
     );
   const Icon =
-    key === "vscode" ? CodeXml : key === "antigravity" ? Orbit : SquareTerminal;
+    key === "21stdev"
+      ? Blocks
+      : key === "vscode"
+        ? CodeXml
+        : key === "antigravity"
+          ? Orbit
+          : SquareTerminal;
   return <Icon size={23} strokeWidth={1.6} aria-hidden="true" />;
 }
