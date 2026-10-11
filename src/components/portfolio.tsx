@@ -369,7 +369,10 @@ export function Hero() {
         </div>
         <ProfilePortrait />
         <div className="portrait-top">
-          <span className="eyebrow">Full Stack / AI Web Developer</span>
+          <span className="portrait-roles eyebrow">
+            <span>Full Stack Web Developer</span>
+            <span>AI Web Developer</span>
+          </span>
           <span className="portrait-star" aria-hidden="true">
             ✦
           </span>

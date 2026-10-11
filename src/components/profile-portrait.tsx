@@ -11,7 +11,7 @@ export function ProfilePortrait() {
     >
       <svg
         className="profile-photo profile-photo-light"
-        viewBox="350 0 1150 1280"
+        viewBox="280 -70 1240 1380"
         preserveAspectRatio="xMidYMin slice"
         aria-hidden="true"
       >
@@ -19,7 +19,7 @@ export function ProfilePortrait() {
       </svg>
       <svg
         className="profile-photo profile-photo-dark"
-        viewBox="-70 360 1050 1200"
+        viewBox="-150 300 1150 1314"
         preserveAspectRatio="xMidYMin slice"
         aria-hidden="true"
       >

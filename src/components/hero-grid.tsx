@@ -32,7 +32,7 @@ export function HeroGrid() {
       ripples = ripples.filter((ripple) => now - ripple.born < 1100);
 
       // Faint dots preserve the texture of the original supplied background.
-      context.fillStyle = `rgba(${base},.05)`;
+      context.fillStyle = `rgba(${base},.035)`;
       for (let x = 14; x < width; x += 28)
         for (let y = 14; y < height; y += 28) {
           context.beginPath();
@@ -86,7 +86,7 @@ export function HeroGrid() {
       }
       const segment = (a: (typeof points)[number][number], b: typeof a) => {
         const proximity = (a.proximity + b.proximity) / 2;
-        context.strokeStyle = `rgba(${proximity > 0.05 ? active : base},${0.07 + proximity * 0.28})`;
+        context.strokeStyle = `rgba(${proximity > 0.05 ? active : base},${0.045 + proximity * 0.16})`;
         context.lineWidth = 0.65 + proximity * 0.7;
         context.beginPath();
         context.moveTo(a.x, a.y);
@@ -98,7 +98,7 @@ export function HeroGrid() {
           const point = points[row][column];
           if (column < columns) segment(point, points[row][column + 1]);
           if (row < rows) segment(point, points[row + 1][column]);
-          context.fillStyle = `rgba(${point.proximity > 0.05 ? active : base},${0.12 + point.proximity * 0.45})`;
+          context.fillStyle = `rgba(${point.proximity > 0.05 ? active : base},${0.08 + point.proximity * 0.28})`;
           context.beginPath();
           context.arc(
             point.x,
@@ -111,7 +111,7 @@ export function HeroGrid() {
         }
       for (const ripple of ripples) {
         const age = (now - ripple.born) / 1000;
-        context.strokeStyle = `rgba(${active},${Math.max(0, 1 - age) * 0.2})`;
+        context.strokeStyle = `rgba(${active},${Math.max(0, 1 - age) * 0.13})`;
         context.lineWidth = 1;
         context.beginPath();
         context.arc(ripple.x, ripple.y, Math.max(0, age * 400), 0, Math.PI * 2);

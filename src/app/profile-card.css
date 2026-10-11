@@ -1,0 +1,75 @@
+/* Portrait framing and small details shared by both theme variants. */
+.portrait-card {
+  background:
+    radial-gradient(ellipse at 30% 12%, #f4f7ee, transparent 62%),
+    linear-gradient(150deg, #dce4d4, #b8c9ac 65%, #9db08f);
+  border-color: #53694b35;
+  box-shadow:
+    0 18px 50px #35462c24,
+    inset 0 1px 0 #ffffffb3;
+}
+.portrait-card:hover {
+  box-shadow: 0 24px 60px #35462c30;
+}
+[data-theme="dark"] .portrait-card {
+  border-color: #bfd1ae30;
+  box-shadow:
+    0 20px 55px #00000045,
+    inset 0 1px 0 #d9e9cc12;
+}
+[data-theme="dark"] .portrait-card:hover {
+  box-shadow: 0 26px 65px #00000055;
+}
+.portrait-card::after {
+  background:
+    radial-gradient(ellipse at 35% 15%, #79956818, transparent 60%),
+    linear-gradient(155deg, #29352b, #141d17 60%, #0b110d);
+}
+.profile-portraits {
+  inset: 112px 0 0;
+}
+.portrait-top {
+  top: 26px;
+  left: 26px;
+  right: 26px;
+  padding-bottom: 16px;
+  align-items: center;
+  gap: 16px;
+  border-color: #3d523c26;
+}
+.portrait-top .portrait-roles {
+  display: grid;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.11em;
+  line-height: 1.5;
+}
+.portrait-roles > span:first-child {
+  font-weight: 600;
+}
+.portrait-roles > span:last-child {
+  font-size: 9px;
+  letter-spacing: 0.09em;
+  opacity: 0.75;
+}
+.portrait-top .portrait-star {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+@media screen and (max-width: 760px) {
+  .portrait-top {
+    top: 22px;
+    left: 22px;
+    right: 22px;
+  }
+  .portrait-top .portrait-roles {
+    font-size: 9px;
+    letter-spacing: 0.07em;
+  }
+  .portrait-roles > span:last-child {
+    font-size: 8px;
+  }
+  .profile-portraits {
+    inset: 100px 0 0;
+  }
+}

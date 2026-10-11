@@ -6,6 +6,7 @@ import "./theme.css";
 import "./contribution-skyline.css";
 import "./section-layout.css";
 import "./responsive.css";
+import "./profile-card.css";
 
 const themeScript = `(function(){var t;try{t=localStorage.getItem("portfolio-theme")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t})()`;
 
