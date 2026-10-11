@@ -11,12 +11,22 @@ const themeScript = `(function(){var t;try{t=localStorage.getItem("portfolio-the
 
 export const metadata: Metadata = {
   title: "Alen Amarante | Full Stack & AI Web Developer",
-  description: "Alen Amarante's portfolio of custom full-stack web apps and responsive digital tools. Powered by AI, crafted for performance.",
+  description:
+    "Alen Amarante's portfolio of custom full-stack web apps and responsive digital tools. Powered by AI, crafted for performance.",
   icons: { icon: { url: "/icon.svg", type: "image/svg+xml" } },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   // Grammarly can inject attributes on body before React hydrates.
   // Limit suppression to this element so child mismatches remain visible.
-  return <html lang="en" data-theme="light" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: themeScript }}/></head><body suppressHydrationWarning>{children}</body></html>;
+  return (
+    <html lang="en" data-theme="light" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body suppressHydrationWarning>{children}</body>
+    </html>
+  );
 }

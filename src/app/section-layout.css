@@ -1,6 +1,10 @@
 /* A shared rhythm for the portfolio's content sections. */
-:root { --page-grid-line: #43533b0d; }
-[data-theme="dark"] { --page-grid-line: #b0c2a50d; }
+:root {
+  --page-grid-line: #43533b0d;
+}
+[data-theme="dark"] {
+  --page-grid-line: #b0c2a50d;
+}
 body:has(.inner-page) {
   background-image:
     linear-gradient(var(--page-grid-line) 1px, transparent 1px),
@@ -8,80 +12,180 @@ body:has(.inner-page) {
   background-size: 55px 55px;
   background-position: center top;
 }
-@media print { body:has(.inner-page) { background-image: none; } }
-.hero, [data-theme="light"] .hero, [data-theme="dark"] .hero { background-image: none; background-color: var(--paper); isolation: isolate; }
-.hero-grid { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-.hero-grid canvas { display: block; width: 100%; height: 100%; }
-.hero > .portrait-card, .hero > .scroll-cue { z-index: 1; }
-.hero { grid-template-columns: minmax(0, 1fr) minmax(0, .77fr); }
-.hero-intro { min-width: 0; }
-.hero-heading { margin: 24px 0 20px; transition: height .42s cubic-bezier(.22, 1, .36, 1); }
-.hero .hero-heading h1 { position: relative; min-height: 0; margin: 0; }
-.hero-greeting { display: inline; font-size: inherit; overflow-wrap: anywhere; }
-.hero-name-line { display: inline-block; font-size: inherit; white-space: nowrap; }
-.hero-name-line em { font-size: inherit; }
-@media (prefers-reduced-motion: reduce) { .hero-heading { transition: none; } }
+@media print {
+  body:has(.inner-page) {
+    background-image: none;
+  }
+}
+.hero,
+[data-theme="light"] .hero,
+[data-theme="dark"] .hero {
+  background-image: none;
+  background-color: var(--paper);
+  isolation: isolate;
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-grid canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.hero > .portrait-card,
+.hero > .scroll-cue {
+  z-index: 1;
+}
+.hero {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.77fr);
+}
+.hero-intro {
+  min-width: 0;
+}
+.hero-heading {
+  margin: 24px 0 20px;
+  transition: height 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero .hero-heading h1 {
+  position: relative;
+  min-height: 0;
+  margin: 0;
+}
+.hero-greeting {
+  display: inline;
+  font-size: inherit;
+  overflow-wrap: anywhere;
+}
+.hero-name-line {
+  display: inline-block;
+  font-size: inherit;
+  white-space: nowrap;
+}
+.hero-name-line em {
+  font-size: inherit;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-heading {
+    transition: none;
+  }
+}
 @media (min-width: 761px) {
-  .hero { align-items: start; }
-  .hero > .portrait-card { align-self: start; margin-top: 24px; }
+  .hero {
+    align-items: start;
+  }
+  .hero > .portrait-card {
+    align-self: start;
+    margin-top: 24px;
+  }
 }
 @media (min-width: 761px) and (max-width: 1100px) {
-  .hero { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); }
+  .hero {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
 }
-.about { padding-top: 72px; }
-.about-layout { margin-bottom: 24px; }
-.about-foot { max-width: 1100px; margin: 0 auto; padding-bottom: 8px; }
-.tech-stack-section { padding-top: 48px; padding-bottom: 56px; }
-.projects-section { padding-top: 88px; padding-bottom: 72px; }
-.skyline-section { padding-top: 16px; padding-bottom: 80px; }
+.about {
+  padding-top: 72px;
+}
+.about-layout {
+  margin-bottom: 24px;
+}
+.about-foot {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-bottom: 8px;
+}
+.tech-stack-section {
+  padding-top: 48px;
+  padding-bottom: 56px;
+}
+.projects-section {
+  padding-top: 88px;
+  padding-bottom: 72px;
+}
+.skyline-section {
+  padding-top: 16px;
+  padding-bottom: 80px;
+}
 
-:is(.tech-stack-section, .projects-section, .skyline-section) > .section-heading {
+:is(.tech-stack-section, .projects-section, .skyline-section)
+  > .section-heading {
   align-items: flex-end;
   gap: 24px;
   margin-bottom: 36px;
   padding-bottom: 24px;
   border-bottom: 1px solid var(--line);
 }
-:is(.tech-stack-section, .projects-section, .skyline-section) .section-heading h2 {
+:is(.tech-stack-section, .projects-section, .skyline-section)
+  .section-heading
+  h2 {
   margin-top: 14px;
   font-size: clamp(28px, 2.5vw, 38px);
   line-height: 1.15;
   font-weight: 600;
-  letter-spacing: -.04em;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
   text-wrap: balance;
 }
-:is(.tech-stack-section, .projects-section, .skyline-section) .section-heading .eyebrow {
+:is(.tech-stack-section, .projects-section, .skyline-section)
+  .section-heading
+  .eyebrow {
   color: var(--muted);
   font-size: 9px;
   line-height: 1.6;
-  letter-spacing: .2em;
+  letter-spacing: 0.2em;
 }
 :is(.tech-stack-section, .projects-section) .section-watermark {
   top: 12px;
   font-size: clamp(70px, 13vw, 200px);
 }
-.section-heading > .text-link { flex-shrink: 0; }
+.section-heading > .text-link {
+  flex-shrink: 0;
+}
 
 @media (max-width: 760px) {
-  .about { padding-top: 48px; }
-  .about-layout { margin-bottom: 20px; }
-  .about-foot { align-items: flex-start; padding-bottom: 4px; }
-  .tech-stack-section { padding-top: 36px; padding-bottom: 40px; }
-  .projects-section { padding-top: 60px; padding-bottom: 48px; }
-  .skyline-section { padding-top: 12px; padding-bottom: 56px; }
-  :is(.tech-stack-section, .projects-section, .skyline-section) > .section-heading {
+  .about {
+    padding-top: 48px;
+  }
+  .about-layout {
+    margin-bottom: 20px;
+  }
+  .about-foot {
+    align-items: flex-start;
+    padding-bottom: 4px;
+  }
+  .tech-stack-section {
+    padding-top: 36px;
+    padding-bottom: 40px;
+  }
+  .projects-section {
+    padding-top: 60px;
+    padding-bottom: 48px;
+  }
+  .skyline-section {
+    padding-top: 12px;
+    padding-bottom: 56px;
+  }
+  :is(.tech-stack-section, .projects-section, .skyline-section)
+    > .section-heading {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
     margin-bottom: 28px;
     padding-bottom: 20px;
   }
-  :is(.tech-stack-section, .projects-section, .skyline-section) .section-heading h2 {
+  :is(.tech-stack-section, .projects-section, .skyline-section)
+    .section-heading
+    h2 {
     margin-top: 10px;
     font-size: clamp(25px, 6vw, 30px);
   }
-  :is(.tech-stack-section, .projects-section, .skyline-section) .section-heading .eyebrow {
+  :is(.tech-stack-section, .projects-section, .skyline-section)
+    .section-heading
+    .eyebrow {
     font-size: 8px;
   }
 }

@@ -19,22 +19,33 @@ export function DeveloperIllustration() {
     return () => preference.removeEventListener("change", update);
   }, []);
 
-  return <figure className={`about-illustration${failed ? " video-unavailable" : ""}`}>
-    <video
-      ref={video}
-      className="developer-animation"
-      src="/illustrations/developer-loop.webm"
-      poster={illustration.src}
-      width={1280}
-      height={720}
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="metadata"
-      aria-label="Animated cartoon of Alen working on his laptop"
-      onError={() => setFailed(true)}
-    >Your browser does not support video playback.</video>
-    <Image className="developer-still" src={illustration} alt="Illustration of Alen working on a laptop with a matcha drink" sizes="(max-width: 760px) 85vw, 450px" />
-  </figure>;
+  return (
+    <figure
+      className={`about-illustration${failed ? " video-unavailable" : ""}`}
+    >
+      <video
+        ref={video}
+        className="developer-animation"
+        src="/illustrations/developer-loop.webm"
+        poster={illustration.src}
+        width={1280}
+        height={720}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        aria-label="Animated cartoon of Alen working on his laptop"
+        onError={() => setFailed(true)}
+      >
+        Your browser does not support video playback.
+      </video>
+      <Image
+        className="developer-still"
+        src={illustration}
+        alt="Illustration of Alen working on a laptop with a matcha drink"
+        sizes="(max-width: 760px) 85vw, 450px"
+      />
+    </figure>
+  );
 }
