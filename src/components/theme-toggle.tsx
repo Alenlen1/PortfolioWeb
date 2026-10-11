@@ -5,6 +5,20 @@ import { Moon, Sun } from "lucide-react";
 
 export function ThemeToggle() {
   const switching = useRef(false);
+  const sound = useRef<HTMLAudioElement | null>(null);
+  useEffect(() => {
+    const chime = new Audio("/audio/theme-toggle.mp3");
+    chime.preload = "auto";
+    chime.volume = 0.45;
+    sound.current = chime;
+    chime.load();
+    return () => {
+      chime.pause();
+      chime.removeAttribute("src");
+      chime.load();
+      if (sound.current === chime) sound.current = null;
+    };
+  }, []);
   useEffect(() => {
     const media = window.matchMedia("(prefers-color-scheme: dark)");
     const followSystem = () => {
@@ -34,6 +48,16 @@ export function ThemeToggle() {
 
   const toggleTheme = async (event: MouseEvent<HTMLButtonElement>) => {
     if (switching.current) return;
+    // Play within the click gesture, before awaiting the theme animation.
+    try {
+      const chime = sound.current ?? new Audio("/audio/theme-toggle.mp3");
+      sound.current = chime;
+      chime.volume = 0.45;
+      chime.currentTime = 0;
+      void chime.play().catch(() => {});
+    } catch {
+      // An unavailable audio device should not prevent switching themes.
+    }
     const root = document.documentElement;
     const theme = root.dataset.theme === "dark" ? "light" : "dark";
     const applyTheme = () => {
