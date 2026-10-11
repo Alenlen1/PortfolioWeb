@@ -1,4 +1,33 @@
 /* A shared rhythm for the portfolio's content sections. */
+:root { --page-grid-line: #43533b0d; }
+[data-theme="dark"] { --page-grid-line: #b0c2a50d; }
+body:has(.inner-page) {
+  background-image:
+    linear-gradient(var(--page-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--page-grid-line) 1px, transparent 1px);
+  background-size: 55px 55px;
+  background-position: center top;
+}
+@media print { body:has(.inner-page) { background-image: none; } }
+.hero, [data-theme="light"] .hero, [data-theme="dark"] .hero { background-image: none; background-color: var(--paper); isolation: isolate; }
+.hero-grid { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.hero-grid canvas { display: block; width: 100%; height: 100%; }
+.hero > .portrait-card, .hero > .scroll-cue { z-index: 1; }
+.hero { grid-template-columns: minmax(0, 1fr) minmax(0, .77fr); }
+.hero-intro { min-width: 0; }
+.hero-heading { margin: 24px 0 20px; transition: height .42s cubic-bezier(.22, 1, .36, 1); }
+.hero .hero-heading h1 { position: relative; min-height: 0; margin: 0; }
+.hero-greeting { display: inline; font-size: inherit; overflow-wrap: anywhere; }
+.hero-name-line { display: inline-block; font-size: inherit; white-space: nowrap; }
+.hero-name-line em { font-size: inherit; }
+@media (prefers-reduced-motion: reduce) { .hero-heading { transition: none; } }
+@media (min-width: 761px) {
+  .hero { align-items: start; }
+  .hero > .portrait-card { align-self: start; margin-top: 24px; }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  .hero { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); }
+}
 .about { padding-top: 72px; }
 .about-layout { margin-bottom: 24px; }
 .about-foot { max-width: 1100px; margin: 0 auto; padding-bottom: 8px; }

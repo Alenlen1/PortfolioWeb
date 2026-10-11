@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { DeveloperIllustration } from "@/components/developer-illustration";
-import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent } from "react";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Facebook, Github, Instagram, Mail, Maximize2, X } from "lucide-react";
 import { emailComposeUrl, profile, projects } from "@/data/portfolio";
 import { ProjectScreenshot } from "@/components/project-screenshot";
 import { ProjectStack } from "@/components/project-stack";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ProfilePortrait } from "@/components/profile-portrait";
+import { HeroGrid } from "@/components/hero-grid";
 
 export function Navigation({ inner = false }: { inner?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
@@ -73,6 +74,75 @@ function TypedRole() {
   return <p className="typed-role" aria-label={profile.roles[0]}><span aria-hidden="true">{text}<span className="type-cursor" /></span></p>;
 }
 
+const greetings = [
+  { text: "Hola", lang: "es" },
+  { text: "Bonjour", lang: "fr" },
+  { text: "Ciao", lang: "it" },
+  { text: "Hallo", lang: "de" },
+  { text: "Olá", lang: "pt" },
+  { text: "こんにちは", lang: "ja" },
+  { text: "안녕하세요", lang: "ko" },
+  { text: "你好", lang: "zh" },
+  { text: "नमस्ते", lang: "hi" },
+  { text: "Kumusta", lang: "fil" },
+];
+
+function RotatingGreeting() {
+  const [greeting, setGreeting] = useState({ index: 0, text: greetings[0].text });
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let index = 0, position = Array.from(greetings[0].text).length, deleting = true;
+    let timer: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      position += deleting ? -1 : 1;
+      setGreeting({ index, text: Array.from(greetings[index].text).slice(0, position).join("") });
+      let delay = deleting ? 90 : 150;
+      if (position === 0) { deleting = false; index = (index + 1) % greetings.length; delay = 650; }
+      if (!deleting && position === Array.from(greetings[index].text).length) { deleting = true; delay = 5000; }
+      timer = setTimeout(tick, delay);
+    };
+    timer = setTimeout(tick, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+  return <span className="hero-greeting" aria-hidden="true" lang={greetings[greeting.index].lang}>{greeting.text}</span>;
+}
+
+function AnimatedHeroHeading() {
+  const container = useRef<HTMLDivElement>(null);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const name = useRef<HTMLSpanElement>(null);
+  useLayoutEffect(() => {
+    const box = container.current, title = heading.current, label = name.current;
+    if (!box || !title || !label) return;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let previous = { x: label.offsetLeft, y: label.offsetTop };
+    let animation: Animation | undefined;
+    const sync = () => {
+      box.style.height = `${title.getBoundingClientRect().height}px`;
+      const next = { x: label.offsetLeft, y: label.offsetTop };
+      if (next.x !== previous.x || next.y !== previous.y) {
+        const transform = getComputedStyle(label).transform;
+        const matrix = transform === "none" ? null : new DOMMatrixReadOnly(transform);
+        const x = previous.x - next.x + (matrix?.m41 ?? 0);
+        const y = previous.y - next.y + (matrix?.m42 ?? 0);
+        animation?.cancel();
+        if (!motion.matches) animation = label.animate(
+          [{ transform: `translate(${x}px, ${y}px)` }, { transform: "translate(0, 0)" }],
+          { duration: 420, easing: "cubic-bezier(.22, 1, .36, 1)" },
+        );
+      }
+      previous = next;
+    };
+    sync();
+    const changes = new MutationObserver(sync);
+    changes.observe(title, { childList: true, characterData: true, subtree: true });
+    const size = new ResizeObserver(sync);
+    size.observe(title);
+    return () => { changes.disconnect(); size.disconnect(); animation?.cancel(); };
+  }, []);
+  return <div className="hero-heading" ref={container}><h1 ref={heading} aria-label={`Hi, I am ${profile.name}.`}><RotatingGreeting /><span ref={name} className="hero-name-line" aria-hidden="true">, I’m <em>{profile.name}.</em></span></h1></div>;
+}
+
 export function Hero() {
   const portrait = useRef<HTMLDivElement>(null);
   const tilt = (event: PointerEvent<HTMLDivElement>) => {
@@ -87,7 +157,8 @@ export function Hero() {
   };
   const reset = () => { portrait.current?.style.setProperty("--tilt-x", "0deg"); portrait.current?.style.setProperty("--tilt-y", "0deg"); };
   return <section id="home" className="hero">
-    <div className="hero-intro"><div className="availability"><span className="status-dot"/> Open to new opportunities</div><SocialLinks icons /><p className="location">{profile.location}</p><h1>Hola, I’m <em>{profile.name}.</em></h1><TypedRole /><p className="hero-description"><strong>Building smarter. Designing better.</strong><br/>Digital experiences powered by AI, built for performance.</p><div className="hero-actions"><a href="#projects" className="pill-button">Explore my work <ArrowDown size={14}/></a><Link href="/resume" className="hero-resume-link">Resume <ArrowUpRight size={14} /></Link></div><div className="hero-note"><span>01 — An introduction</span><span>Crafted with intention <span aria-hidden="true">✦</span></span></div></div>
+    <HeroGrid />
+    <div className="hero-intro"><div className="availability"><span className="status-dot"/> Open to new opportunities</div><SocialLinks icons /><p className="location">{profile.location}</p><AnimatedHeroHeading /><TypedRole /><p className="hero-description"><strong>Building smarter. Designing better.</strong><br/>Digital experiences powered by AI, built for performance.</p><div className="hero-actions"><a href="#projects" className="pill-button">Explore my work <ArrowDown size={14}/></a><Link href="/resume" className="hero-resume-link">Resume <ArrowUpRight size={14} /></Link></div><div className="hero-note"><span>01 — An introduction</span><span>Crafted with intention <span aria-hidden="true">✦</span></span></div></div>
     <div ref={portrait} className="portrait-card" onPointerMove={tilt} onPointerLeave={reset}>
       <div className="portrait-code-label" aria-hidden="true"><span>const developer = &#123;</span><span>&nbsp; curiosity: <b>∞</b>,</span><span>&nbsp; always: <b className="portrait-mood-light">"yearning"</b><b className="portrait-mood-dark">"begging"</b></span><span>&#125;;</span></div>
       <ProfilePortrait/>
@@ -146,7 +217,7 @@ export function Contact() {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
   const copy = async () => { try { await navigator.clipboard.writeText(profile.email); setCopied(true); timer.current = setTimeout(() => setCopied(false), 2200); } catch { window.location.href = emailComposeUrl; } };
-  return <footer className="contact dark-section" id="contact"><span className="section-watermark" aria-hidden="true">CONTACT</span><span className="eyebrow">Have something in mind? / Get in touch</span><div className="contact-center"><h2>Let’s work<br/><em>together.</em><span className="contact-star" aria-hidden="true">✦</span></h2><div className="contact-email"><a href={emailComposeUrl} target="_blank" rel="noopener noreferrer">{profile.email}<ArrowUpRight size={24}/></a><button onClick={copy} aria-label={copied ? "Email copied" : "Copy email address"}>{copied ? <Check size={18}/> : <Copy size={18}/>}</button><span className="copy-feedback" role="status">{copied ? "Copied!" : ""}</span></div><div className="contact-socials"><Link href="/resume">Resume</Link><SocialLinks /></div></div><div className="footer-bottom"><p>© {new Date().getFullYear()} {profile.name}. Built with codex.</p><a href="#home">Back to top <ArrowUpRight size={13}/></a></div></footer>;
+  return <footer className="contact dark-section" id="contact"><span className="section-watermark" aria-hidden="true">CONTACT</span><span className="eyebrow">Have something in mind? / Get in touch</span><div className="contact-center"><h2>Have an idea?<br/><em>Let’s build it.</em><span className="contact-star" aria-hidden="true">✦</span></h2><div className="contact-email"><a href={emailComposeUrl} target="_blank" rel="noopener noreferrer">{profile.email}<ArrowUpRight size={24}/></a><button onClick={copy} aria-label={copied ? "Email copied" : "Copy email address"}>{copied ? <Check size={18}/> : <Copy size={18}/>}</button><span className="copy-feedback" role="status">{copied ? "Copied!" : ""}</span></div><div className="contact-socials"><Link href="/resume">Resume</Link><SocialLinks /></div></div><div className="footer-bottom"><p>© {new Date().getFullYear()} {profile.name}. Built with codex.</p><a href="#home">Back to top <ArrowUpRight size={13}/></a></div></footer>;
 }
 
 export function ScrollReveal() {
