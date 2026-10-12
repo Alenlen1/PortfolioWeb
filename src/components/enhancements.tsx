@@ -4,6 +4,10 @@ import { useState } from "react";
 import { projects, toolkitGroups } from "@/data/portfolio";
 import { ProjectCard } from "@/components/portfolio";
 import { ToolkitIcon } from "@/components/toolkit-icon";
+import {
+  ScrollAssemblyTitle,
+  ScrollAssemblyItems,
+} from "@/components/scroll-assembly";
 
 export function TechStack() {
   return (
@@ -18,14 +22,17 @@ export function TechStack() {
       <div className="section-heading">
         <div>
           <span className="eyebrow">What I build with</span>
-          <h2 id="techstack-heading">Tech stack & tools</h2>
+          <ScrollAssemblyTitle
+            id="techstack-heading"
+            text="Tech stack & tools"
+          />
         </div>
       </div>
       <div className="tech-stack-grid">
         {toolkitGroups.map(({ title, items }) => (
           <article className="tech-stack-card" key={title}>
             <h3>{title}</h3>
-            <ul>
+            <ScrollAssemblyItems>
               {items.map((item) => (
                 <li key={item.name} title={item.detail}>
                   <span className={`toolkit-icon icon-${item.icon}`}>
@@ -34,7 +41,7 @@ export function TechStack() {
                   <span className="toolkit-item-copy">{item.name}</span>
                 </li>
               ))}
-            </ul>
+            </ScrollAssemblyItems>
           </article>
         ))}
       </div>

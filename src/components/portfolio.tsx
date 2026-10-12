@@ -29,6 +29,12 @@ import { ProjectStack } from "@/components/project-stack";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ProfilePortrait } from "@/components/profile-portrait";
 import { HeroGrid } from "@/components/hero-grid";
+import {
+  ScrollAssemblyTitle,
+  ScrollAssemblyLetters,
+  ScrollAssemblyBlock,
+  useAssembly,
+} from "@/components/scroll-assembly";
 
 export function Navigation({ inner = false }: { inner?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
@@ -391,17 +397,21 @@ export function Hero() {
 }
 
 export function About() {
+  const section = useRef<HTMLElement>(null);
+  useAssembly(section);
   return (
-    <section className="about dark-section" id="about">
+    <section
+      ref={section}
+      className="about dark-section assembly-about"
+      id="about"
+    >
       <div className="about-layout">
         <div className="about-copy">
           <span className="eyebrow">A little about me</span>
-          <h2>
-            <strong>
-              Building web apps at speed. Powered by AI, crafted for
-              performance.
-            </strong>
-          </h2>
+          <ScrollAssemblyTitle
+            emphasized
+            text="Building web apps at speed. Powered by AI, crafted for performance."
+          />
           <p>
             Independent developer building custom full-stack solutions and
             responsive digital tools. Focused on turning ideas into clean,
@@ -442,38 +452,53 @@ export function ProjectCard({
   project: (typeof projects)[number];
   index: number;
 }) {
+  const card = useRef<HTMLElement>(null);
+  useAssembly(card);
   return (
-    <article className={`project-card ${index % 2 ? "reversed" : ""}`}>
+    <article
+      ref={card}
+      className={`project-card assembly-project ${index % 2 ? "reversed" : ""}`}
+    >
       <ProjectGallery project={project} index={index} />
       <div className="project-copy">
         <span className="project-number" aria-hidden="true">
           0{index + 1}
         </span>
-        <span className="eyebrow">
-          {project.category} / {project.status}
-        </span>
-        <h3>
-          <Link href={`/projects/${project.slug}`}>{project.name}</Link>
-        </h3>
-        <p>{project.description}</p>
-        <Highlights items={project.highlights} />
-        <ProjectStack items={project.stack} />
-        <div className="project-links">
-          <a
-            className="text-link"
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Visit live site <ArrowUpRight size={17} />
-          </a>
-          <Link
-            className="text-link project-details-link"
-            href={`/projects/${project.slug}`}
-          >
-            Project details <ArrowRight size={16} />
-          </Link>
-        </div>
+        <ScrollAssemblyBlock>
+          <span className="eyebrow">
+            {project.category} / {project.status}
+          </span>
+          <h3>
+            <Link href={`/projects/${project.slug}`} aria-label={project.name}>
+              <ScrollAssemblyLetters text={project.name} />
+            </Link>
+          </h3>
+          <p>{project.description}</p>
+        </ScrollAssemblyBlock>
+        <ScrollAssemblyBlock>
+          <Highlights items={project.highlights} />
+        </ScrollAssemblyBlock>
+        <ScrollAssemblyBlock>
+          <ProjectStack items={project.stack} />
+        </ScrollAssemblyBlock>
+        <ScrollAssemblyBlock>
+          <div className="project-links">
+            <a
+              className="text-link"
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Visit live site <ArrowUpRight size={17} />
+            </a>
+            <Link
+              className="text-link project-details-link"
+              href={`/projects/${project.slug}`}
+            >
+              Project details <ArrowRight size={16} />
+            </Link>
+          </div>
+        </ScrollAssemblyBlock>
       </div>
     </article>
   );
@@ -564,7 +589,7 @@ export function Projects() {
       <div className="section-heading">
         <div>
           <span className="eyebrow">Portfolio showcase</span>
-          <h2>Selected projects</h2>
+          <ScrollAssemblyTitle text="Selected projects" />
         </div>
         <Link href="/projects" className="text-link">
           View all projects <ArrowRight size={16} />
@@ -742,7 +767,7 @@ export function ScrollReveal() {
       { threshold: 0.08 },
     );
     const elements = document.querySelectorAll(
-      ".project-card, .about h2, .tech-stack-card",
+      ".project-card:not(.assembly-project), .about h2:not(.assembly-title)",
     );
     elements.forEach((el) => {
       el.classList.add("reveal-ready");

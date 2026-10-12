@@ -10,7 +10,7 @@
   color: var(--soft-text);
 }
 @media (min-width: 1000px) {
-  .skyline-section > .skyline-widget {
+  .skyline-section .skyline-widget {
     width: 80%;
     margin-inline: auto;
   }

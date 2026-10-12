@@ -1,5 +1,9 @@
 import ContributionSkyline from "@/components/contribution-skyline";
 import {
+  ScrollAssemblyTitle,
+  ScrollAssemblyBlock,
+} from "@/components/scroll-assembly";
+import {
   getGitHubContributions,
   githubProfileUrl,
   githubUsername,
@@ -17,7 +21,10 @@ export async function ContributionSection({ endDate }: { endDate: string }) {
       <div className="section-heading">
         <div>
           <span className="eyebrow">GitHub / @{githubUsername}</span>
-          <h2 id="skyline-heading">Building, commit by commit.</h2>
+          <ScrollAssemblyTitle
+            id="skyline-heading"
+            text="Building, commit by commit."
+          />
         </div>
         <a
           className="text-link"
@@ -28,13 +35,15 @@ export async function ContributionSection({ endDate }: { endDate: string }) {
           View GitHub profile ↗
         </a>
       </div>
-      <ContributionSkyline
-        data={activity.data}
-        endDate={activity.endDate}
-        defaultView="2d"
-        palette={palette}
-        className="skyline-widget"
-      />
+      <ScrollAssemblyBlock>
+        <ContributionSkyline
+          data={activity.data}
+          endDate={activity.endDate}
+          defaultView="2d"
+          palette={palette}
+          className="skyline-widget"
+        />
+      </ScrollAssemblyBlock>
       {activity.cached && (
         <p className="skyline-cache-note">
           Last saved GitHub activity through {activity.endDate}.

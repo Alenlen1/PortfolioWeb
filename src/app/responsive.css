@@ -199,7 +199,7 @@
   .archive-filters button {
     min-height: 44px;
   }
-  .skyline-section > .skyline-widget {
+  .skyline-section .skyline-widget {
     width: 100%;
     min-width: 0;
     padding: 12px;

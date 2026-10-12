@@ -1,0 +1,169 @@
+.assembly-title {
+  perspective: 600px;
+}
+.assembly-word {
+  display: inline-block;
+  white-space: pre;
+}
+.assembly-character {
+  display: inline-block;
+  --character-progress: clamp(
+    0,
+    calc(var(--assembly, 0) * var(--character-stagger, 1)),
+    1
+  );
+  transform: translateX(calc(var(--character-progress) * var(--character-x)))
+    rotateX(calc(var(--character-progress) * var(--character-rotation)));
+  opacity: calc(1 - var(--character-progress));
+}
+.assembly-items {
+  perspective: 600px;
+}
+.assembly-items > li {
+  --item-progress: clamp(
+    0,
+    calc(var(--assembly, 0) * var(--item-stagger, 1)),
+    1
+  );
+  transform: translate(
+      calc(var(--item-progress) * var(--item-x, 0px)),
+      calc(var(--item-progress) * var(--item-y, 0px))
+    )
+    rotate(calc(var(--item-progress) * var(--item-rotation, 0deg)))
+    scale(calc(1 - var(--item-progress) * 0.2));
+  opacity: calc(1 - var(--item-progress));
+}
+.assembly-project .project-copy h3 {
+  perspective: 600px;
+}
+.assembly-project > .project-media,
+.assembly-about .about-illustration {
+  opacity: calc(1 - var(--assembly, 0));
+  transform: translate(
+      calc(var(--assembly, 0) * -54px),
+      calc(var(--assembly, 0) * 36px)
+    )
+    rotate(calc(var(--assembly, 0) * -3deg))
+    scale(calc(1 - var(--assembly, 0) * 0.08));
+}
+.assembly-project.reversed > .project-media,
+.assembly-about .about-illustration {
+  transform: translate(
+      calc(var(--assembly, 0) * 54px),
+      calc(var(--assembly, 0) * 36px)
+    )
+    rotate(calc(var(--assembly, 0) * 3deg))
+    scale(calc(1 - var(--assembly, 0) * 0.08));
+}
+.assembly-project > .project-copy,
+.assembly-about .about-copy > p,
+.assembly-block-content {
+  transform: translateY(calc(var(--assembly, 0) * 42px))
+    scale(calc(1 - var(--assembly, 0) * 0.04));
+}
+.assembly-about .about-copy > p,
+.assembly-block-content,
+.assembly-project .project-number {
+  opacity: calc(1 - var(--assembly, 0));
+}
+.assembly-project .project-copy > :not(.project-number) {
+  --content-progress: clamp(
+    0,
+    calc(var(--assembly, 0) * var(--content-stagger, 1)),
+    1
+  );
+  transform: translateY(calc(var(--content-progress) * 20px));
+  opacity: calc(1 - var(--content-progress));
+}
+.assembly-project .project-copy > h3 {
+  --content-stagger: 1.1;
+}
+.assembly-project .project-copy > p {
+  --content-stagger: 1.25;
+}
+.assembly-project .project-copy > .highlights {
+  --content-stagger: 1.4;
+}
+.assembly-project .project-copy > .stack-tags {
+  --content-stagger: 1.55;
+}
+.assembly-project .project-copy > .project-links {
+  --content-stagger: 1.7;
+}
+.assembly-project .project-copy > .assembly-block {
+  transform: none;
+  opacity: 1;
+}
+.assembly-project .assembly-block-content > .eyebrow {
+  font-size: 9px;
+}
+.assembly-project .assembly-block-content > p {
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--soft-text);
+  max-width: 490px;
+}
+.assembly-project .assembly-block .highlights li,
+.assembly-project .assembly-block .project-stack > span {
+  --detail-progress: clamp(
+    0,
+    calc(var(--assembly, 0) * var(--detail-stagger, 1)),
+    1
+  );
+  transform: translateY(calc(var(--detail-progress) * 16px));
+  opacity: calc(1 - var(--detail-progress));
+}
+.assembly-project
+  .assembly-block
+  :is(.highlights li, .project-stack > span):nth-child(2n) {
+  --detail-stagger: 1.15;
+}
+.assembly-project
+  .assembly-block
+  :is(.highlights li, .project-stack > span):nth-child(3n) {
+  --detail-stagger: 1.3;
+}
+.assembly-project
+  .assembly-block
+  :is(.highlights li, .project-stack > span):nth-child(4n) {
+  --detail-stagger: 1.45;
+}
+@media (max-width: 760px) {
+  .assembly-project > .project-media,
+  .assembly-project.reversed > .project-media,
+  .assembly-about .about-illustration {
+    transform: translateY(calc(var(--assembly, 0) * 28px))
+      scale(calc(1 - var(--assembly, 0) * 0.05));
+  }
+  .assembly-character {
+    transform: translateX(
+        calc(var(--character-progress) * var(--character-x) * 0.5)
+      )
+      rotateX(calc(var(--character-progress) * var(--character-rotation)));
+  }
+  .assembly-items > li {
+    transform: translate(
+        calc(var(--item-progress) * var(--item-x, 0px) * 0.5),
+        calc(var(--item-progress) * var(--item-y, 0px) * 0.5)
+      )
+      rotate(calc(var(--item-progress) * var(--item-rotation, 0deg) * 0.5))
+      scale(calc(1 - var(--item-progress) * 0.1));
+  }
+}
+@media (prefers-reduced-motion: reduce), print {
+  .assembly-character,
+  .assembly-items > li,
+  .assembly-project > .project-media,
+  .assembly-project.reversed > .project-media,
+  .assembly-project > .project-copy,
+  .assembly-about .about-illustration,
+  .assembly-about .about-copy > p,
+  .assembly-project .project-copy > :not(.project-number),
+  .assembly-project .project-number,
+  .assembly-project .assembly-block .highlights li,
+  .assembly-project .assembly-block .project-stack > span,
+  .assembly-block-content {
+    transform: none;
+    opacity: 1;
+  }
+}
