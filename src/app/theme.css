@@ -27,24 +27,35 @@
 .theme-toggle {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
+  width: 64px;
+  height: 32px;
+  padding: 3px;
+  flex-shrink: 0;
   border: 1px solid var(--line);
   border-radius: 30px;
-  background: var(--header);
+  background: var(--surface);
   color: var(--ink);
   font: 600 10px var(--mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   backdrop-filter: blur(12px);
   transition:
-    background 0.2s,
-    border-color 0.2s;
+    background-color 0.45s ease,
+    border-color 0.45s ease;
 }
 .theme-toggle:hover {
-  background: var(--surface);
   border-color: var(--muted);
+}
+[data-theme="dark"] .theme-toggle {
+  background: var(--paper);
+  border-color: var(--line);
+}
+[data-theme="dark"] .theme-toggle:hover {
+  border-color: var(--muted);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
 }
 /* Capture the final theme immediately, then reveal it from the toggle. */
 html.theme-revealing *,
@@ -62,6 +73,45 @@ html.theme-revealing::view-transition-old(root) {
 }
 html.theme-revealing::view-transition-new(root) {
   z-index: 2;
+}
+/* Separate snapshots let the thumb slide above the page's circular reveal. */
+html.theme-revealing .theme-toggle {
+  view-transition-name: theme-switch;
+}
+html.theme-revealing .theme-toggle-thumb {
+  view-transition-name: theme-switch-thumb;
+}
+html.theme-revealing .theme-toggle-moon {
+  view-transition-name: theme-switch-moon;
+}
+html.theme-revealing .theme-toggle-sun {
+  view-transition-name: theme-switch-sun;
+}
+html.theme-revealing::view-transition-group(theme-switch),
+html.theme-revealing::view-transition-group(theme-switch-thumb),
+html.theme-revealing::view-transition-group(theme-switch-moon),
+html.theme-revealing::view-transition-group(theme-switch-sun) {
+  animation-duration: 450ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 3;
+}
+html.theme-revealing::view-transition-group(theme-switch-thumb) {
+  z-index: 4;
+}
+html.theme-revealing::view-transition-group(theme-switch-moon),
+html.theme-revealing::view-transition-group(theme-switch-sun) {
+  z-index: 5;
+}
+html.theme-revealing::view-transition-old(theme-switch),
+html.theme-revealing::view-transition-new(theme-switch),
+html.theme-revealing::view-transition-old(theme-switch-thumb),
+html.theme-revealing::view-transition-new(theme-switch-thumb),
+html.theme-revealing::view-transition-old(theme-switch-moon),
+html.theme-revealing::view-transition-new(theme-switch-moon),
+html.theme-revealing::view-transition-old(theme-switch-sun),
+html.theme-revealing::view-transition-new(theme-switch-sun) {
+  animation-duration: 450ms;
+  animation-timing-function: ease;
 }
 /* Keep the portrait separate from the page wipe so its photos crossfade. */
 html.theme-revealing .portrait-card {
@@ -87,19 +137,54 @@ html.theme-revealing::view-transition-new(theme-portrait) {
     opacity: 1;
   }
 }
-.theme-toggle > span {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.theme-toggle-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: 24px 24px;
+  justify-content: space-between;
+  width: 100%;
+  height: 24px;
 }
-.theme-toggle .theme-to-light {
-  display: none;
+.theme-toggle-thumb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #cdd5c7;
+  transform: translateX(32px);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.45s ease;
 }
-[data-theme="dark"] .theme-toggle .theme-to-dark {
-  display: none;
+[data-theme="dark"] .theme-toggle-thumb {
+  background: #344332;
+  transform: translateX(0);
 }
-[data-theme="dark"] .theme-toggle .theme-to-light {
-  display: flex;
+.theme-toggle-moon,
+.theme-toggle-sun {
+  display: grid;
+  place-items: center;
+  position: relative;
+  color: var(--muted);
+  transition: color 0.45s ease;
+}
+[data-theme="light"] .theme-toggle-sun,
+:root:not([data-theme="dark"]) .theme-toggle-sun {
+  color: #34402f;
+}
+[data-theme="dark"] .theme-toggle-moon {
+  color: var(--accent-ink);
+}
+[data-theme="dark"] .theme-toggle-sun {
+  color: var(--muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle,
+  .theme-toggle-track > span {
+    transition: none;
+  }
 }
 .brand-label,
 .header-scrolled {
@@ -613,10 +698,7 @@ body,
     height: 455px;
   }
   .theme-toggle {
-    padding: 0;
-  }
-  .theme-toggle > span {
-    gap: 8px;
+    padding: 3px;
   }
 }
 @media (min-width: 761px) and (max-width: 1100px) {

@@ -1,11 +1,27 @@
 "use client";
 
-import { useEffect, useRef, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Moon, Sun } from "lucide-react";
 
-export function ThemeToggle() {
+interface ThemeToggleProps {
+  className?: string;
+}
+
+export function ThemeToggle({ className }: ThemeToggleProps) {
+  const [isDark, setIsDark] = useState(false);
   const switching = useRef(false);
   const sound = useRef<HTMLAudioElement | null>(null);
+  useEffect(() => {
+    const root = document.documentElement;
+    const syncTheme = () => setIsDark(root.dataset.theme === "dark");
+    syncTheme();
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => {
     const chime = new Audio("/audio/theme-toggle.mp3");
     chime.preload = "auto";
@@ -112,16 +128,21 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      className="theme-toggle"
+      className={["theme-toggle", className].filter(Boolean).join(" ")}
       onClick={toggleTheme}
-      aria-label="Toggle light and dark mode"
+      role="switch"
+      aria-checked={isDark}
+      aria-label="Dark mode"
       title="Toggle light and dark mode"
     >
-      <span className="theme-to-dark">
-        <Moon size={16} aria-hidden="true" />
-      </span>
-      <span className="theme-to-light">
-        <Sun size={16} aria-hidden="true" />
+      <span className="theme-toggle-track" aria-hidden="true">
+        <span className="theme-toggle-thumb" />
+        <span className="theme-toggle-moon">
+          <Moon size={16} strokeWidth={1.5} />
+        </span>
+        <span className="theme-toggle-sun">
+          <Sun size={16} strokeWidth={1.5} />
+        </span>
       </span>
     </button>
   );
