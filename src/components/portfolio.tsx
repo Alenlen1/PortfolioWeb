@@ -111,7 +111,13 @@ export function Navigation({ inner = false }: { inner?: boolean }) {
   );
 }
 
-export function SocialLinks({ icons = false }: { icons?: boolean }) {
+export function SocialLinks({
+  icons = false,
+  withIcons = false,
+}: {
+  icons?: boolean;
+  withIcons?: boolean;
+}) {
   const iconSet = [Github, Facebook, Instagram];
   return (
     <div className={icons ? "social-icons" : "social-links"}>
@@ -125,7 +131,16 @@ export function SocialLinks({ icons = false }: { icons?: boolean }) {
             rel="noopener noreferrer"
             aria-label={`${social.label} profile`}
           >
-            {icons ? <Icon size={19} strokeWidth={1.7} /> : social.label}
+            {icons ? (
+              <Icon size={19} strokeWidth={1.7} />
+            ) : (
+              <>
+                {withIcons && (
+                  <Icon size={15} strokeWidth={1.7} aria-hidden="true" />
+                )}
+                {social.label}
+              </>
+            )}
           </a>
         );
       })}
@@ -703,6 +718,7 @@ export function Contact() {
     try {
       await navigator.clipboard.writeText(profile.email);
       setCopied(true);
+      if (timer.current) clearTimeout(timer.current);
       timer.current = setTimeout(() => setCopied(false), 2200);
     } catch {
       window.location.href = emailComposeUrl;
@@ -713,7 +729,6 @@ export function Contact() {
       <span className="section-watermark" aria-hidden="true">
         CONTACT
       </span>
-      <span className="eyebrow">Have something in mind? / Get in touch</span>
       <div className="contact-center">
         <h2
           ref={heading}
@@ -732,11 +747,22 @@ export function Contact() {
         <ScrollAssemblyBlock>
           <div className="contact-email">
             <a href={emailComposeUrl} target="_blank" rel="noopener noreferrer">
-              {profile.email}
-              <ArrowUpRight size={24} />
+              <Mail
+                size={22}
+                className="contact-mail-icon"
+                aria-hidden="true"
+              />
+              <span className="contact-email-copy">
+                <span>Start a conversation</span>
+                <strong>{profile.email}</strong>
+              </span>
+              <ArrowUpRight size={22} aria-hidden="true" />
             </a>
             <button
+              type="button"
               onClick={copy}
+              data-copied={copied}
+              title={copied ? "Email copied" : "Copy email address"}
               aria-label={copied ? "Email copied" : "Copy email address"}
             >
               {copied ? <Check size={18} /> : <Copy size={18} />}
@@ -748,8 +774,10 @@ export function Contact() {
         </ScrollAssemblyBlock>
         <ScrollAssemblyBlock>
           <div className="contact-socials">
-            <Link href="/resume">Resume</Link>
-            <SocialLinks />
+            <Link href="/resume">
+              Resume <ArrowUpRight size={14} aria-hidden="true" />
+            </Link>
+            <SocialLinks withIcons />
           </div>
         </ScrollAssemblyBlock>
       </div>

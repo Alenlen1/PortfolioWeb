@@ -9,6 +9,7 @@ import "./responsive.css";
 import "./profile-card.css";
 import "./intro.css";
 import "./scroll-assembly.css";
+import "./contact.css";
 
 const themeScript = `(function(){var t;try{t=localStorage.getItem("portfolio-theme")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t})()`;
 

@@ -1,0 +1,213 @@
+/* A clear final invitation, using the portfolio's cream and sage palette. */
+.contact {
+  min-height: 0;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse at 50% 35%, #a3b68a14, transparent 65%), var(--dark);
+}
+.contact-center {
+  max-width: 1040px;
+  width: 100%;
+  margin-inline: auto;
+  padding: 24px 0 56px;
+}
+.contact h2 {
+  font-size: clamp(56px, 7.7vw, 112px);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+}
+.contact h2 em {
+  color: #526447;
+  font-size: 1.16em;
+}
+[data-theme="dark"] .contact h2 em {
+  color: var(--accent-ink);
+}
+.contact-email {
+  width: min(100%, 580px);
+  margin: 36px auto 0;
+  padding: 18px 20px;
+  gap: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px -16px #2634211a;
+  text-align: left;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.contact-email:focus-within,
+.contact-email:hover {
+  border-color: #6e80596b;
+  box-shadow: 0 14px 34px -18px #26342135;
+}
+.contact-email > a {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  gap: 16px;
+  color: var(--ink);
+}
+.contact-email > a > svg {
+  flex-shrink: 0;
+}
+.contact-email > a > svg:last-child {
+  margin-left: auto;
+  transition: transform 0.25s ease;
+}
+.contact-email > a:hover > svg:last-child {
+  transform: translate(2px, -2px);
+}
+.contact-mail-icon {
+  box-sizing: content-box;
+  padding: 10px;
+  border-radius: 12px;
+  background: #6e805917;
+  color: #526447;
+}
+[data-theme="dark"] .contact-mail-icon {
+  background: #b3c6a512;
+  color: var(--accent-ink);
+}
+.contact-email-copy {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.contact-email-copy > span {
+  font: 9px var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soft-text);
+}
+.contact-email-copy > strong {
+  font-size: clamp(13px, 1.4vw, 17px);
+  font-weight: 500;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.contact-email > button {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--chip);
+  color: var(--soft-text);
+}
+.contact-email > button:hover {
+  background: var(--dark);
+  color: var(--ink);
+}
+.contact-email > button[data-copied="true"] {
+  border-color: #6e805970;
+  background: #6e80591a;
+  color: #526447;
+}
+[data-theme="dark"] .contact-email > button[data-copied="true"] {
+  color: var(--accent-ink);
+}
+.contact-email a:focus-visible,
+.contact-email button:focus-visible,
+.contact-socials a:focus-visible {
+  outline: 2px solid var(--muted);
+  outline-offset: 4px;
+}
+.contact-email .copy-feedback {
+  top: calc(100% + 8px);
+  right: 20px;
+  color: var(--soft-text);
+}
+.contact-socials,
+.contact-socials .social-links {
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.contact-socials {
+  margin-top: 24px;
+}
+.contact-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font: 9px var(--mono);
+  letter-spacing: 0.08em;
+  color: var(--soft-text);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+.contact-socials a:hover {
+  background: var(--surface);
+  border-color: var(--muted);
+}
+.contact-socials > a {
+  background: #526447;
+  border-color: #526447;
+  color: #f0f0ec;
+}
+.contact-socials > a:hover {
+  background: #43543a;
+  border-color: #43543a;
+  color: #f0f0ec;
+}
+[data-theme="dark"] .contact-socials > a {
+  background: var(--accent-ink);
+  border-color: var(--accent-ink);
+  color: var(--paper);
+}
+[data-theme="dark"] .contact-socials > a:hover {
+  background: #c5d6b9;
+  border-color: #c5d6b9;
+  color: var(--paper);
+}
+.contact .footer-bottom {
+  border-color: var(--line);
+  line-height: 1.7;
+}
+@media (max-width: 760px) {
+  .contact {
+    min-height: 0;
+    padding-top: 28px;
+  }
+  .contact-center {
+    padding: 20px 0 36px;
+  }
+  .contact h2 {
+    font-size: clamp(36px, 9vw, 66px);
+  }
+  .contact-email {
+    padding: 14px;
+    gap: 10px;
+  }
+  .contact-email > a {
+    gap: 10px;
+  }
+  .contact-email > a > svg {
+    margin: 0;
+  }
+  .contact-email > a > .contact-mail-icon {
+    display: none;
+  }
+  .contact-email-copy > span {
+    font-size: 8px;
+  }
+  .contact-socials a {
+    padding-inline: 13px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-email,
+  .contact-email > a > svg:last-child,
+  .contact-socials a {
+    transition: none;
+  }
+}
