@@ -8,7 +8,9 @@ import {
   useRef,
   useState,
   type PointerEvent,
+  type SVGProps,
 } from "react";
+import { siWhatsapp } from "simple-icons";
 import {
   ArrowDown,
   ArrowLeft,
@@ -111,6 +113,25 @@ export function Navigation({ inner = false }: { inner?: boolean }) {
   );
 }
 
+function WhatsAppIcon({
+  size = 19,
+  ...props
+}: { size?: number } & SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d={siWhatsapp.path} />
+    </svg>
+  );
+}
+
 export function SocialLinks({
   icons = false,
   withIcons = false,
@@ -118,18 +139,30 @@ export function SocialLinks({
   icons?: boolean;
   withIcons?: boolean;
 }) {
-  const iconSet = [Github, Facebook, Instagram];
+  const iconSet = {
+    GitHub: Github,
+    Facebook,
+    Instagram,
+    WhatsApp: WhatsAppIcon,
+  };
   return (
     <div className={icons ? "social-icons" : "social-links"}>
-      {profile.socials.map((social, i) => {
-        const Icon = iconSet[i];
+      {profile.socials.map((social) => {
+        const Icon = iconSet[social.label as keyof typeof iconSet];
         return (
           <a
             key={social.label}
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`${social.label} profile`}
+            aria-label={
+              social.label === "WhatsApp"
+                ? `Chat with ${profile.name} on WhatsApp`
+                : `${social.label} profile`
+            }
+            title={
+              social.label === "WhatsApp" ? "Chat on WhatsApp" : social.label
+            }
           >
             {icons ? (
               <Icon size={19} strokeWidth={1.7} />

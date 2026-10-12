@@ -1,4 +1,11 @@
 // Replace these sample entries with your own details.
+export const whatsappContact = {
+  number: "+639497066355",
+  message:
+    "Hi Alen! I'm interested in working with you. Can we discuss my project?",
+};
+export const whatsappComposeUrl = `https://wa.me/${whatsappContact.number.replace(/\D/g, "")}?text=${encodeURIComponent(whatsappContact.message)}`;
+
 export const profile = {
   name: "Alen",
   fullName: "Alen Amarante",
@@ -13,6 +20,7 @@ export const profile = {
       label: "Instagram",
       href: "https://www.instagram.com/alenandreiamarante/",
     },
+    { label: "WhatsApp", href: whatsappComposeUrl },
   ],
 };
 
