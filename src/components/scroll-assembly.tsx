@@ -29,13 +29,26 @@ export function useAssembly(target: RefObject<HTMLElement | null>) {
         return;
       }
       const { top, bottom } = element.getBoundingClientRect();
-      const progress = Math.max(
+      const viewportProgress = Math.max(
         0,
         Math.min(
           1,
           (window.innerHeight * 0.95 - top) / (window.innerHeight * 0.5),
         ),
       );
+      // Footer content must fully reveal even when the page ends before it
+      // can reach the usual midpoint of the viewport.
+      const remainingScroll = Math.max(
+        0,
+        document.documentElement.scrollHeight -
+          window.innerHeight -
+          window.scrollY,
+      );
+      const bottomProgress = Math.max(
+        0,
+        1 - remainingScroll / (window.innerHeight * 0.35),
+      );
+      const progress = Math.max(viewportProgress, bottomProgress);
       const eased = progress * progress * (3 - 2 * progress);
       const desired = 1 - eased;
       const delta = lastTime ? Math.min(48, Math.max(1, now - lastTime)) : 16;

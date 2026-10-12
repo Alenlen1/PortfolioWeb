@@ -689,6 +689,8 @@ export function Contributions() {
 }
 
 export function Contact() {
+  const heading = useRef<HTMLHeadingElement>(null);
+  useAssembly(heading);
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(
@@ -713,42 +715,54 @@ export function Contact() {
       </span>
       <span className="eyebrow">Have something in mind? / Get in touch</span>
       <div className="contact-center">
-        <h2>
-          Have an idea?
+        <h2
+          ref={heading}
+          className="assembly-title"
+          aria-label="Have an idea? Let’s build it."
+        >
+          <ScrollAssemblyLetters text="Have an idea?" />
           <br />
-          <em>Let’s build it.</em>
+          <em>
+            <ScrollAssemblyLetters text="Let’s build it." />
+          </em>
           <span className="contact-star" aria-hidden="true">
             ✦
           </span>
         </h2>
-        <div className="contact-email">
-          <a href={emailComposeUrl} target="_blank" rel="noopener noreferrer">
-            {profile.email}
-            <ArrowUpRight size={24} />
+        <ScrollAssemblyBlock>
+          <div className="contact-email">
+            <a href={emailComposeUrl} target="_blank" rel="noopener noreferrer">
+              {profile.email}
+              <ArrowUpRight size={24} />
+            </a>
+            <button
+              onClick={copy}
+              aria-label={copied ? "Email copied" : "Copy email address"}
+            >
+              {copied ? <Check size={18} /> : <Copy size={18} />}
+            </button>
+            <span className="copy-feedback" role="status">
+              {copied ? "Copied!" : ""}
+            </span>
+          </div>
+        </ScrollAssemblyBlock>
+        <ScrollAssemblyBlock>
+          <div className="contact-socials">
+            <Link href="/resume">Resume</Link>
+            <SocialLinks />
+          </div>
+        </ScrollAssemblyBlock>
+      </div>
+      <ScrollAssemblyBlock>
+        <div className="footer-bottom">
+          <p>
+            © {new Date().getFullYear()} {profile.name}. Built with codex.
+          </p>
+          <a href="#home">
+            Back to top <ArrowUpRight size={13} />
           </a>
-          <button
-            onClick={copy}
-            aria-label={copied ? "Email copied" : "Copy email address"}
-          >
-            {copied ? <Check size={18} /> : <Copy size={18} />}
-          </button>
-          <span className="copy-feedback" role="status">
-            {copied ? "Copied!" : ""}
-          </span>
         </div>
-        <div className="contact-socials">
-          <Link href="/resume">Resume</Link>
-          <SocialLinks />
-        </div>
-      </div>
-      <div className="footer-bottom">
-        <p>
-          © {new Date().getFullYear()} {profile.name}. Built with codex.
-        </p>
-        <a href="#home">
-          Back to top <ArrowUpRight size={13} />
-        </a>
-      </div>
+      </ScrollAssemblyBlock>
     </footer>
   );
 }

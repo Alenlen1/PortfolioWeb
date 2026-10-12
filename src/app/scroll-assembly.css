@@ -1,6 +1,9 @@
 .assembly-title {
   perspective: 600px;
 }
+.contact .contact-star {
+  opacity: calc(1 - var(--assembly, 0));
+}
 .assembly-word {
   display: inline-block;
   white-space: pre;
@@ -162,6 +165,7 @@
   .assembly-project .project-number,
   .assembly-project .assembly-block .highlights li,
   .assembly-project .assembly-block .project-stack > span,
+  .contact .contact-star,
   .assembly-block-content {
     transform: none;
     opacity: 1;
